@@ -165,13 +165,13 @@ $(function () {
         })
 
         // 输入
-        .on('input', 'li > p', function(){
+        .on('click', 'li > p', function(){
             console.log('输入')
-            console.log($(this).text())
+            console.log($('.inp').val())
             // 拿到商品 id
             const id = $(this).data('id')
             // 找到 info 里面的对应商品
-            info[id].value = $(this).text()                    
+            info[id].value = $('.inp').val()                    
             // 重新加载页面
             bindHtml()
             // 重新保存起来
@@ -179,6 +179,25 @@ $(function () {
         })
 
         // 勾选
+        .on('click', 'li > input', function(){
+            const id = $(this).data('id')
+            // 拿到当前标签的状态
+            const type =$(this).checked
+            console.log(type)
+            // 找到 info 里面的对应商品
+            if(type === true){
+                info[id].done = false
+            }
+            if(type === false){
+                info[id].done = true
+            }
+            // 重新加载页面
+            bindHtml()
+            // 重新保存起来
+            window.localStorage.setItem('todolist', JSON.stringify(info))
+
+            
+        })
 
 
    
@@ -198,7 +217,7 @@ $(function () {
         for (let i = 0; i < info.length; i++) {
             str1 += `
                 <li>
-                    <input type="checkbox" />
+                    <input type="checkbox" data-id="${i+1}"/>
                     <p  data-id="${i+1}">${info[i].content}</p>
                     <a href="" data-id="${i+1}" >-</a>
                 </li>
